@@ -1,0 +1,60 @@
+Introduction
+============
+
+libregex is a regular expression engine that can match multiple expressions simultaneously.
+
+API
+===
+
+At the heart of the API are the find() and match() functions.
+
+The match() functions require that the expression(s) match the entire input, whereas the find() functions scan the input until the first match is found.
+
+	namespace regex
+	{
+	    // Find the left-most match in the string
+	    bool find(const std::string& s, expression& re);
+
+	    // Read from the input stream until EOS or a match is found
+	    bool find(std::istream* is, expression& re);
+
+	    // Try to match the expression against the entire string
+	    bool match(const std::string& s, const expression& re);
+
+	    // Try to match the expression against the input stream
+	    bool match(std::istream& is, expression& re);
+
+
+	    // Find the left-most matching expressions in the string
+	    expressions* find(const std::string& s, expressions& regexs);
+
+	    // Read from the input stream until EOS or a match is found
+	    expressions* find(std::istream& is, expressions& regexs);
+
+	    // Return the expressions that match the entire input string
+	    expressions* match(const std::string& s, expressions& regexs);
+
+	    // Return the expressions that match the input stream
+	    expressions* match(std::istream& is, expressions& regexs);
+	}
+
+Example
+=======
+
+This simple example scans two strings looking for the expression 'abc' and prints the results to the console.
+
+	#include <string>
+	#include "regex/regex.h"
+
+	int main()
+	{
+	    std::string s1("a");
+	    std::string s2("abc");
+
+	    regex::literal l1("abc");
+
+	    printf("'%s' %s 'a'\n", s1.c_str(), regex::match(s1, l1) ? "==" : "!=");
+	    printf("'%s' %s 'a'\n", s2.c_str(), regex::match(s2, l1) ? "==" : "!=");
+
+	    return 0;
+	}

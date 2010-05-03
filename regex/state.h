@@ -20,6 +20,7 @@ namespace regex
 class regex::state::base
 {
 public:
+    virtual const base*	getDefault() const	{ return NULL;	}
     virtual const base* next(char) const =0;
 };
 
@@ -27,10 +28,12 @@ class regex::state::literal : public base
 {
     typedef std::map<char, const base*>	transition_type;
 
+    const base*	_default;
     transition_type transitions;
 
 public:
-    literal(char c, const base* target)
+    literal(const base* def=NULL) : _default(def) {}
+    literal(char c, const base* target) : _default(NULL)
     {
 	insert(c, target);
     }
@@ -44,9 +47,12 @@ public:
     {
 	transition_type::const_iterator i(transitions.find(c));
 	if( transitions.end() == i )
-	    return NULL;
+	    return _default;
 	return i->second;
     }
+
+    virtual const base* getDefault() const	{ return _default;	}
+    void setDefault(base* def)		{ _default = def;	}
 };
 
 class regex::state::final : public base

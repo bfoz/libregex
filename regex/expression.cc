@@ -1,5 +1,15 @@
 #include "expression.h"
 
+// Merge the state fragments for each expression in the alternation
+const regex::state::base* regex::alternation::state(const_states& s, const state::base* final) const
+{
+    expressions::const_iterator i = _expressions.begin();
+    const state::base* j = (*i)->state(s, final);
+    for(++i; i != _expressions.end(); ++i)
+	j = state::merge(s, *j, *(*i)->state(s, final));
+    return j;
+}
+
 // Concatenate the state machines for multiple expressions
 const regex::state::base* regex::concatenation::state(const_states& s, const state::base* final) const
 {

@@ -9,6 +9,7 @@
 namespace regex
 {
     class expression;	// Abstract base class for syntax specification classes
+    class alternation;	// Alternation of multiple expressions
     class concatenation;// Concatenation of multiple expressions
     class literal;	// A literal sequence of characters to match
 
@@ -23,6 +24,23 @@ public:
     //   object to transition to after the last character.
     //  Returns the first of the new states
     virtual const state::base* state(const_states& s, const state::base* final) const =0;
+};
+
+class regex::alternation : public expression
+{
+    expressions	_expressions;
+
+public:
+    alternation(expressions& regexs) : _expressions(regexs) {}
+    alternation(expression& regex) : _expressions(1, &regex) {}
+    alternation(expression& regex1, expression& regex2) : _expressions(1, &regex1)
+    {
+	_expressions.push_back(&regex2);
+    }
+
+    void push_back(expression& regex)	{ _expressions.push_back(&regex);   }
+
+    virtual const state::base* state(const_states& s, const state::base* final) const;
 };
 
 class regex::concatenation : public expression

@@ -12,6 +12,7 @@ namespace regex
     class alternation;	// Alternation of multiple expressions
     class concatenation;// Concatenation of multiple expressions
     class literal;	// A literal sequence of characters to match
+    class threshold;	// Matches at least N repetitions of an expression
 
     typedef std::list<expression*> expressions;	// A container for multiple regular expressions
 }
@@ -67,6 +68,17 @@ class regex::literal : public expression
 public:
     literal(const char* s) : _literal(s) {}
     literal(std::string& s) : _literal(s) {}
+
+    virtual const state::base* state(const_states& s, const state::base* final) const;
+};
+
+class regex::threshold : public expression
+{
+    expression*	_expression;
+    size_t	_threshold;
+
+public:
+    threshold(expression& re, size_t num) : _expression(&re), _threshold(num) {}
 
     virtual const state::base* state(const_states& s, const state::base* final) const;
 };

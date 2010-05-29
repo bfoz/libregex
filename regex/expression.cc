@@ -34,3 +34,26 @@ const regex::state::base* regex::literal::state(const_states& s, const state::ba
     }
     return final;
 }
+
+/* Create a threshold repetition by duplicating the child state machine fragments
+    When _threshold == 0, generate a single copy of _expression's states using a
+     dummy final state. Set the dummy state's default transition to point back
+     to the start state, and the start state's default transition to point to
+     the true final state.
+    When _threshold > 0, concatenate _threshold copies of _expression's states
+     and then append a copy of the (_threshold == 0) case.
+    In reality this is all performed in reverse, but the idea is the same. */
+const regex::state::base* regex::threshold::state(const_states& s, const state::base* final) const
+{
+    state::literal* f = new state::literal;		// Create a dummy final state
+    const state::base* a = _expression->state(s, f);	// Generate the states
+    ((state::literal*)a)->setDefault(final);		// Default transition to final
+    f->setDefault(a);					// Loop back to start state
+
+    s.push_back(f);		// Add the dummy final state to the container
+
+    for(size_t i=0; i < _threshold; ++i)
+	a = _expression->state(s, a);
+
+    return a;
+}

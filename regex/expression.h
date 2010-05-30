@@ -11,6 +11,7 @@ namespace regex
     class expression;	// Abstract base class for syntax specification classes
     class alternation;	// Alternation of multiple expressions
     class concatenation;// Concatenation of multiple expressions
+    class interval;	// Matches N-M repetitions of an expression
     class literal;	// A literal sequence of characters to match
     class threshold;	// Matches at least N repetitions of an expression
 
@@ -57,6 +58,22 @@ public:
     }
 
     void push_back(expression& regex)	{ _expressions.push_back(&regex);   }
+
+    virtual const state::base* state(const_states& s, const state::base* final) const;
+};
+
+class regex::interval : public expression
+{
+    expression*	_expression;
+    size_t	_min, _max;
+
+public:
+    interval(expression& re, size_t minmax) : _expression(&re), _min(minmax), _max(minmax) {}
+    interval(expression& re, size_t min, size_t max) : _expression(&re), _min(min), _max(max)
+    {
+	if( _max < _min )
+	    std::swap(_min, _max);
+    }
 
     virtual const state::base* state(const_states& s, const state::base* final) const;
 };

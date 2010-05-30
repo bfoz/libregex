@@ -22,6 +22,28 @@ const regex::state::base* regex::concatenation::state(const_states& s, const sta
     return final;
 }
 
+/* Create an interval repetition by duplicating the expression's state machine
+    fragments. The miminum is implemented similarly to a threshold repetition.
+    Each repetition therafter, up to the maximum, ends with a default transition
+    to the final state as well as the transitions to the next repetition. */
+const regex::state::base* regex::interval::state(const_states& s, const state::base* final) const
+{
+    const state::base* a = final;
+
+    // Create (_max - _min) repetitions
+    for(size_t i=0; i < (_max - _min); ++i)
+    {
+	a = _expression->state(s, a);
+	((state::literal*)a)->setDefault(final);	// Default transition to final
+    }
+
+    // Create _min repetitions of the expression
+    for(size_t i=0; i < _min; ++i)
+	a = _expression->state(s, a);
+
+    return a;
+}
+
 // Convert a string literal into a series of states, each matching a single character
 //  Returns the state that matches the first character in the string literal
 const regex::state::base* regex::literal::state(const_states& s, const state::base* final) const

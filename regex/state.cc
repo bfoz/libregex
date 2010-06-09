@@ -22,7 +22,7 @@ namespace regex
 	literal* m = new literal;
 
 	// Add the new state to the state list
-	s.push_back(m);
+	s.insert(m);
 
 	// Merge the two transition maps, handling any duplicates
 	literal::const_iterator i = s1.begin();
@@ -50,7 +50,7 @@ namespace regex
 	literal* m = new literal(&s2);
 
 	// Add the new state to the state list
-	s.push_back(m);
+	s.insert(m);
 
 	// Copy all transitions from the literal state
 	literal::const_iterator i = s1.begin();

@@ -5,8 +5,9 @@
 bool regex::find(const std::string& s, expression& re)
 {
     state::final    final;
-    const_states    states(1, &final);
-    
+    const_states    states;
+
+    states.insert(&final);
     const state::base* next = re.state(states, &final);
     
     std::string::const_iterator i = s.begin();

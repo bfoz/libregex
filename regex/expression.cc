@@ -17,7 +17,7 @@ const regex::state::base* regex::concatenation::state(const_states& s, const sta
     for(; i != _expressions.rend(); ++i)
     {
 	final = (*i)->state(s, final);
-	s.push_back(final);
+	s.insert(final);
     }
     return final;
 }
@@ -52,7 +52,7 @@ const regex::state::base* regex::literal::state(const_states& s, const state::ba
     for(; i != _literal.rend(); ++i)
     {
 	final = new state::literal(*i, final);
-	s.push_back(final);
+	s.insert(final);
     }
     return final;
 }
@@ -72,7 +72,7 @@ const regex::state::base* regex::threshold::state(const_states& s, const state::
     ((state::literal*)a)->setDefault(final);		// Default transition to final
     f->setDefault(a);					// Loop back to start state
 
-    s.push_back(f);		// Add the dummy final state to the container
+    s.insert(f);		// Add the dummy final state to the container
 
     for(size_t i=0; i < _threshold; ++i)
 	a = _expression->state(s, a);

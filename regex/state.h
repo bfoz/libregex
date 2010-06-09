@@ -1,7 +1,7 @@
 #ifndef	REGEX_STATE_H
 #define	REGEX_STATE_H
 
-#include <list>
+#include <set>
 #include <map>
 
 namespace regex
@@ -13,8 +13,8 @@ namespace regex
 	class literal;	// A state that transitions on single-character input
     }
 
-    typedef std::list<state::base*>		states;		// A container for state objects
-    typedef std::list<const state::base*>	const_states;	// A container for const state objects
+    typedef std::set<state::base*>		states;		// A container for state objects
+    typedef std::set<const state::base*>	const_states;	// A container for const state objects
 
     namespace state
     {

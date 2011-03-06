@@ -30,7 +30,7 @@ bool regex::match(const std::string& s, const expression& re)
     const state::base* next = re.state(states, &final);
     
     std::string::const_iterator i = s.begin();
-    while( (i != s.end()) && next && (next = next->next(*i)) )
+    while( (i != s.end()) && next && (next != &final) && (next = next->next(*i)) )
 	++i;
 
     // Follow any default transitions that may be waiting for input

@@ -15,7 +15,7 @@ bool regex::find(const std::string& s, expression& re)
 	++i;
 
     // Follow any default transitions that may be waiting for input
-    while( next->getDefault() )
+    while( next && next->getDefault() )
 	next = next->getDefault();
 
     // Return true if a match state is encountered

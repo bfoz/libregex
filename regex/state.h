@@ -61,7 +61,7 @@ public:
     {
 	transitions_type::const_iterator i(transitions.find(c));
 	if( transitions.end() == i )
-	    return _default;
+	    return NULL;
 	return i->second;
     }
 

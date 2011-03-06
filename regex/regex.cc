@@ -12,7 +12,11 @@ bool regex::find(const std::string& s, expression& re)
     
     std::string::const_iterator i = s.begin();
     while( (i != s.end()) && next && (next != &final) && (next = next->next(*i)) )
+    {
+	if( next->getDefault() == &final )
+	    return true;
 	++i;
+    }
 
     // Follow any default transitions that may be waiting for input
     while( next && next->getDefault() )

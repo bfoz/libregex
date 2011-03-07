@@ -66,7 +66,7 @@ public:
     }
 
     virtual const base* getDefault() const	{ return _default;	}
-    void setDefault(base* def)		{ _default = def;	}
+    void setDefault(const base* def)		{ _default = def;	}
 };
 
 class regex::state::final : public base

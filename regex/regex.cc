@@ -2,7 +2,7 @@
 #include "state.h"
 
 // Find the left-most shortest match in the string
-bool regex::find(const std::string& s, expression& re)
+bool regex::find(const std::string& s, const expression& re)
 {
     state::final    final;
     const_states    states;

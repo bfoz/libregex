@@ -9,7 +9,7 @@
 namespace regex
 {
     // Find the left-most match in the string
-    bool find(const std::string& s, expression& re);
+    bool find(const std::string& s, const expression& re);
 
     // Read from the input stream until EOS or a match is found
     bool find(std::istream* is, expression& re);
